@@ -53,6 +53,7 @@ export function ChartPanel({ data }: { data: ChartPoint[] }) {
             <Area type="monotone" dataKey="hydrogen" stroke="oklch(0.86 0.24 145)" strokeWidth={2.5} fill="url(#gradH2)" />
           </AreaChart>
         </ResponsiveContainer>
+        ) : null}
       </div>
     </div>
   );
