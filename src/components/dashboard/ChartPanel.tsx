@@ -1,8 +1,14 @@
+import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export type ChartPoint = { t: string; energy: number; hydrogen: number };
 
 export function ChartPanel({ data }: { data: ChartPoint[] }) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setReady(true), 800);
+    return () => clearTimeout(id);
+  }, []);
   return (
     <div className="glass-card glass-card-hover p-5 animate-fade-in">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
