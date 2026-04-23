@@ -131,11 +131,34 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 @utility glass-card-hover {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, color-mix(in oklab, var(--neon-green) 50%, transparent), color-mix(in oklab, var(--neon-cyan) 50%, transparent), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  &:hover::before { opacity: 1; }
   &:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.45), 0 0 0 1px color-mix(in oklab, var(--neon-green) 30%, transparent);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px color-mix(in oklab, var(--neon-green) 30%, transparent), 0 0 40px color-mix(in oklab, var(--neon-green) 15%, transparent);
     border-color: color-mix(in oklab, var(--neon-green) 25%, transparent);
   }
+}
+@utility shimmer-text {
+  background: linear-gradient(90deg, var(--foreground) 0%, var(--neon-cyan) 25%, var(--neon-green) 50%, var(--neon-cyan) 75%, var(--foreground) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
 }
 @utility text-glow-green {
   color: var(--neon-green);
