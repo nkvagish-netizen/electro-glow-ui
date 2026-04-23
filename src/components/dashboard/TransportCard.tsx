@@ -1,10 +1,11 @@
 import { Truck, MapPin, Clock } from "lucide-react";
+import { MotionCard, AnimatedNumber } from "./motion";
 
 export function TransportCard({ delivering, distance, eta }: { delivering: boolean; distance: number; eta: number }) {
   const etaH = Math.floor(eta / 60);
   const etaM = Math.floor(eta % 60);
   return (
-    <div className="glass-card glass-card-hover p-5 animate-fade-in">
+    <MotionCard className="glass-card glass-card-hover p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Transport System</h2>
@@ -33,13 +34,15 @@ export function TransportCard({ delivering, distance, eta }: { delivering: boole
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-xl bg-muted/40 p-3 border border-border">
           <p className="text-[11px] uppercase text-muted-foreground tracking-wider flex items-center gap-1"><MapPin className="size-3" /> Distance</p>
-          <p className="text-xl font-bold tabular-nums mt-0.5">{distance.toFixed(0)}<span className="text-xs font-normal text-muted-foreground"> km</span></p>
+          <p className="text-xl font-bold tabular-nums mt-0.5">
+            <AnimatedNumber value={distance} /><span className="text-xs font-normal text-muted-foreground"> km</span>
+          </p>
         </div>
         <div className="rounded-xl bg-muted/40 p-3 border border-border">
           <p className="text-[11px] uppercase text-muted-foreground tracking-wider flex items-center gap-1"><Clock className="size-3" /> ETA</p>
           <p className="text-xl font-bold tabular-nums mt-0.5">{etaH}h {etaM}m</p>
         </div>
       </div>
-    </div>
+    </MotionCard>
   );
 }
