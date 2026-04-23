@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Navbar } from "./Navbar";
 import { EnergyCard } from "./EnergyCard";
 import { ElectrolyzerCard } from "./ElectrolyzerCard";
@@ -7,6 +8,7 @@ import { TransportCard } from "./TransportCard";
 import { AIPanel } from "./AIPanel";
 import { ChartPanel, type ChartPoint } from "./ChartPanel";
 import { CarbonCard } from "./CarbonCard";
+import { containerVariants, cardVariants } from "./motion";
 
 const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 const fmtTime = (d: Date) => d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
@@ -65,7 +67,12 @@ export function Dashboard() {
     <div className="min-h-screen p-4 md:p-6 max-w-[1600px] mx-auto">
       <Navbar />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6"
+      >
         <EnergyCard
           sources={[
             { key: "solar", label: "Solar Energy", value: solar },
@@ -77,21 +84,26 @@ export function Dashboard() {
         <StorageTank percent={storage} capacity={1000} />
         <TransportCard delivering={distance < 120 && distance > 0} distance={distance} eta={eta} />
 
-        <div className="xl:col-span-2">
+        <motion.div variants={cardVariants} className="xl:col-span-2">
           <AIPanel decisions={decisions} />
-        </div>
-        <div className="xl:col-span-2">
+        </motion.div>
+        <motion.div variants={cardVariants} className="xl:col-span-2">
           <CarbonCard tons={carbon} />
-        </div>
+        </motion.div>
 
-        <div className="md:col-span-2 xl:col-span-4">
+        <motion.div variants={cardVariants} className="md:col-span-2 xl:col-span-4">
           <ChartPanel data={series} />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <footer className="text-center text-xs text-muted-foreground mt-8 pb-4">
+      <motion.footer
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="text-center text-xs text-muted-foreground mt-8 pb-4"
+      >
         Smart Green Hydrogen Production System · Live telemetry updated every 2s
-      </footer>
+      </motion.footer>
     </div>
   );
 }
