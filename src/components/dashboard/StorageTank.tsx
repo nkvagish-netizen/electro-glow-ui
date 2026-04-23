@@ -1,3 +1,6 @@
+import { motion } from "framer-motion";
+import { MotionCard, AnimatedNumber } from "./motion";
+
 export function StorageTank({ percent, capacity }: { percent: number; capacity: number }) {
   const filled = (percent / 100) * capacity;
   const color =
@@ -7,7 +10,7 @@ export function StorageTank({ percent, capacity }: { percent: number; capacity: 
   const dash = (percent / 100) * circ;
 
   return (
-    <div className="glass-card glass-card-hover p-5 animate-fade-in">
+    <MotionCard className="glass-card glass-card-hover p-5">
       <div className="mb-2">
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Hydrogen Storage</h2>
         <p className="text-xs text-muted-foreground">Pressurized tank · 350 bar</p>
@@ -17,19 +20,23 @@ export function StorageTank({ percent, capacity }: { percent: number; capacity: 
         <div className="relative">
           <svg width="180" height="180" className="-rotate-90">
             <circle cx="90" cy="90" r={radius} stroke="var(--muted)" strokeWidth="12" fill="none" />
-            <circle
+            <motion.circle
               cx="90" cy="90" r={radius}
               stroke={color}
               strokeWidth="12"
               fill="none"
               strokeLinecap="round"
-              strokeDasharray={`${dash} ${circ}`}
-              style={{ filter: `drop-shadow(0 0 8px ${color})`, transition: "stroke-dasharray 0.7s ease, stroke 0.5s ease" }}
+              strokeDasharray={`${circ} ${circ}`}
+              animate={{ strokeDashoffset: circ - dash }}
+              transition={{ type: "spring", stiffness: 60, damping: 18 }}
+              style={{ filter: `drop-shadow(0 0 10px ${color})` }}
             />
           </svg>
           <div className="absolute inset-0 grid place-items-center">
             <div className="text-center">
-              <p className="text-3xl font-bold tabular-nums" style={{ color }}>{percent.toFixed(0)}%</p>
+              <p className="text-3xl font-bold tabular-nums" style={{ color }}>
+                <AnimatedNumber value={percent} />%
+              </p>
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Capacity</p>
             </div>
           </div>
@@ -39,10 +46,10 @@ export function StorageTank({ percent, capacity }: { percent: number; capacity: 
       <div className="flex justify-between items-center text-sm pt-2 border-t border-border">
         <span className="text-muted-foreground">Stored</span>
         <span className="font-bold tabular-nums">
-          <span style={{ color }}>{filled.toFixed(0)}</span>
+          <span style={{ color }}><AnimatedNumber value={filled} /></span>
           <span className="text-muted-foreground"> / {capacity} kg</span>
         </span>
       </div>
-    </div>
+    </MotionCard>
   );
 }
