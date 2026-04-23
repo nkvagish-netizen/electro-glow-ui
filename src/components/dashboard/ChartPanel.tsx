@@ -1,8 +1,14 @@
+import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export type ChartPoint = { t: string; energy: number; hydrogen: number };
 
 export function ChartPanel({ data }: { data: ChartPoint[] }) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setReady(true), 800);
+    return () => clearTimeout(id);
+  }, []);
   return (
     <div className="glass-card glass-card-hover p-5 animate-fade-in">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
@@ -17,6 +23,7 @@ export function ChartPanel({ data }: { data: ChartPoint[] }) {
       </div>
 
       <div className="h-[280px] w-full min-w-0">
+        {ready ? (
         <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
           <AreaChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
             <defs>
@@ -46,6 +53,7 @@ export function ChartPanel({ data }: { data: ChartPoint[] }) {
             <Area type="monotone" dataKey="hydrogen" stroke="oklch(0.86 0.24 145)" strokeWidth={2.5} fill="url(#gradH2)" />
           </AreaChart>
         </ResponsiveContainer>
+        ) : null}
       </div>
     </div>
   );
